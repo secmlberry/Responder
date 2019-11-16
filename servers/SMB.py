@@ -236,7 +236,7 @@ class SMB1(BaseRequestHandler):  # SMB1 & SMB2 Server class, NTLMSSP
               				self.request.send(buffer1)
               				data = self.request.recv(1024)
                                 ## Session Setup 3 answer SMBv2.
-				if data[16:18] == "\x01\x00" and GrabMessageID(data)[0:1] == "\x03" and data[4:5] == "\xfe":
+				if data[16:18] == "\x01\x00" and data[4:5] == "\xfe":
               				ParseSMBHash(data, self.client_address[0], Challenge)
               				head = SMB2Header(Cmd="\x01\x00", MessageId=GrabMessageID(data), PID="\xff\xfe\x00\x00", CreditCharge=GrabCreditCharged(data), Credits=GrabCreditRequested(data), NTStatus="\x22\x00\x00\xc0", SessionID=GrabSessionID(data))
               				t = SMB2Session2Data()
